@@ -1,0 +1,1577 @@
+        <!-- main content -->
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span2">
+                        <div class="sidebar">
+							<? include("./acoes/sysgeral/menu.php"); ?>
+                        </div>
+                    </div>
+                    <div class="span10">
+                        <div class="w-box">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="tabbable tabbable-bordered">
+                                            <ul class="nav nav-tabs">
+                                                <? if(trim($_REQUEST['var3'])=="") { } else { ?>
+												<? if(trim($sysperm['editar_'.$mod.''])==1) { ?><li class="active"><a data-toggle="tab" href="#tb1_editar">Editando <?=$row['nome']?></a></li><? } ?>
+												<? } ?>
+                                                <? if(trim($sysperm['inserir_'.$mod.''])==1||trim($sysperm['editar_'.$mod.''])==1||trim($sysperm['excluir_'.$mod.''])==1) { ?><li <? if(trim($_REQUEST['var3'])=="") { ?>class="active"<? } ?>><a data-toggle="tab" href="#tb1_lista">Lista de Itens</a></li><? } ?>
+                                                <? if(trim($_REQUEST['var3'])=="") { ?><? if(trim($sysperm['inserir_'.$mod.''])==1) { ?><li><a data-toggle="tab" href="#tb1_novo">Adicionar Novo</a></li><? } ?><? } ?>
+                                                <? if(trim($sysperm['inserir_'.$mod.''])==1||trim($sysperm['editar_'.$mod.''])==1||trim($sysperm['excluir_'.$mod.''])==1) { ?><li><a data-toggle="tab" href="#tb1_categorias">Categorias</a></li><? } ?>
+                                                <? if(trim($sysperm['inserir_'.$mod.''])==1||trim($sysperm['editar_'.$mod.''])==1||trim($sysperm['excluir_'.$mod.''])==1) { ?><li><a data-toggle="tab" href="#tb1_status">Status</a></li><? } ?>
+                                                <? if(trim($sysperm['inserir_'.$mod.''])==1||trim($sysperm['editar_'.$mod.''])==1||trim($sysperm['excluir_'.$mod.''])==1) { ?><li><a data-toggle="tab" href="#tb1_classificacao">Classificações</a></li><? } ?>
+                                            </ul>
+											<script>
+                                              $(document).ready(function() {
+                                                //* form validation
+                                                forms.simple();
+            
+                                                //* datatables 
+                                                beoro_datatables.basic();
+                                                $('.dataTables_filter input').each(function() {
+                                                    $(this).attr("placeholder", "Digite sua busca aqui");
+                                                })
+            
+												beoro_select_row.init();
+										
+												//* WYSIWG Editor
+												beoro_wysiwg.init();
+
+												//* datepicker
+												beoro_datepicker.init();
+            
+                                                //* masked inputs
+                                                beoro_maskedInputs.init();
+                                            });
+            
+                                            //* form validation
+                                            forms = {
+                                                simple: function() {
+                                                    if($('#forms').length) {
+                                                        $('#forms').validate({
+                                                            onkeyup: false,
+                                                            errorClass: 'error',
+                                                            validClass: 'valid',
+                                                            highlight: function(element) {
+                                                                $(element).closest('div').addClass("f-error");
+                                                            },
+                                                            unhighlight: function(element) {
+                                                                $(element).closest('div').removeClass("f-error");
+                                                            },
+                                                            errorPlacement: function(error, element) {
+                                                                $(element).closest('div').append(error);
+                                                            },
+                                                            rules: {
+                                                                nome: { required: true },
+                                                                stat: { required: true },
+                                                            },
+                                                            invalidHandler: function(form, validator) {
+                                                                // callback
+                                                            }
+                                                        })
+                                                    }
+                                                }
+                                            };
+                                            
+											//* select all rows
+											beoro_select_row = {
+												init: function() {
+													$('.select_msgs').click(function () {
+														var tableid = $(this).data('tableid');
+														$('#'+tableid).find('input[class=select_msg]').attr('checked', this.checked);
+													});
+												},
+											};
+
+                                            //* datatables
+                                            beoro_datatables = {
+                                                //* column reorder & toggle visibility
+                                                basic: function() {
+                                                    if($('#dt_basic').length) {
+                                                        $('#dt_basic').dataTable({
+                                                            "sPaginationType": "bootstrap_full",
+															"aoColumns": [
+																{ "bSortable": false },
+																{ "sType": "string" },
+																{ "sType": "string" },
+																{ "sType": "string" },
+																{ "sType": "string" },
+																{ "sType": "string" },
+																{ "bSortable": false }
+															]
+                                                        });
+                                                    }
+                                                }
+                                            };
+
+											//* WYSIWG Editor
+											beoro_wysiwg = {
+												init: function() {
+													if($('#texto').length) { 
+														CKEDITOR.replace( 'texto', {
+															toolbar: 'Standard'
+														});
+													}
+													<? if(trim($_REQUEST['var3'])=="") { } else { ?>
+													if($('#texto_editar').length) { 
+														CKEDITOR.replace( 'texto_editar', {
+															toolbar: 'Standard'
+														});
+													}
+													<? } ?>
+												}
+											};
+
+											//* datepicker
+											beoro_datepicker = {
+												init: function() {
+													if($('#data_cadastro').length) {
+														$('#data_cadastro').datepicker()
+													}
+													if($('#data_prospecto').length) {
+														$('#data_prospecto').datepicker()
+													}
+													if($('#data_cliente').length) {
+														$('#data_cliente').datepicker()
+													}
+												}
+											};
+
+                                            //* masked inputs
+                                            beoro_maskedInputs = {
+                                                init: function() {
+                                                    $("#cep").inputmask('99999-999');
+                                                    $("#cpf").inputmask('999.999.999-99');
+                                                    $("#cnpj").inputmask('99.999.999/9999-99');
+                                                }
+                                            };
+
+                                            </script>
+                                            <div class="tab-content">
+                                                
+                                                <? if(trim($_REQUEST['var3'])=="") { } else { ?>
+                                                <div id="tb1_editar" class="tab-pane active">
+                                                    <div>
+                                                        <form name="forms" method="post" action="<?=$link?><?=$_REQUEST['var1']?>/<?=$_REQUEST['var2']?>" target="_self" ENCTYPE="multipart/form-data" id="forms">
+                                                            <input type="hidden" name="acaoLocal" value="interno" />
+                                                            <input type="hidden" name="acaoForm" value="editar" />
+                                                            <input type="hidden" name="modulo" value="<?=$mod?>" />
+                                                            <input type="hidden" name="iditem" value="<?=$_REQUEST['var4']?>" />
+                
+                                                            <? 
+                                                            $numeroUnicoGerado = $row['numeroUnico']; 
+                                                            ?>
+                                                            <input type="hidden" name="numeroUnico" id="numeroUnico" value="<?=$numeroUnicoGerado?>">
+                
+                
+                                                            <div class="tabbable tabs-left tabbable-bordered">
+                                                                <ul class="nav nav-tabs">
+                                                                    <li class="active"><a data-toggle="tab" href="#tb3_a">Dados principais</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_b">Dados de acesso</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_c">Dados complementares</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_d">Contatos</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_e">Endereço</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_f">Redes Sociais</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_g">Observações</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_h">Arquivos</a></li>
+                                                                </ul>
+                                                                <div class="tab-content">
+                                                                    <div id="tb3_a" class="tab-pane active" style="min-height:350px;">
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Escolha a categoria</label>
+                                                                                <select name="id<?=$mod?>_categoria" id="id<?=$mod?>_categoria">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM ".$mod."_categoria WHERE stat='1' ORDER BY ordem");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>" <? if($rSqlItem['id']==$row['id'.$mod.'_categoria']) { echo "selected"; } ?>><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep">
+                                                                            <label class="req">Nome Completo</label>
+                                                                            <input value="<?=$row['nome']?>" class="span8" type="text" name="nome" id="nome" />
+                                                                        </div>
+            
+                                                                        <div class="formSep">
+                                                                            <div class="span3">
+                                                                                <label>Data de Cadastro</label>
+                                                                                <div class="input-append date" id="data_cadastro" data-date-format="dd/mm/yyyy" data-date="<? if(trim($row['data_cadastro'])==""||trim($row['data_cadastro'])=="0000-00-00") { echo date("d/m/Y"); } else { ajustaDataSemHora($row['data_cadastro'],"d/m/Y"); } ?>">
+                                                                                    <input class="span8" size="16" name="data_cadastro" value="<? if(trim($row['data_cadastro'])==""||trim($row['data_cadastro'])=="0000-00-00") { echo date("d/m/Y"); } else { ajustaDataSemHora($row['data_cadastro'],"d/m/Y"); } ?>" type="text">
+                                                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--
+                                                                            <div class="span3">
+                                                                                <label>Data de Prospecto</label>
+                                                                                <div class="input-append date" id="data_prospecto" data-date-format="dd/mm/yyyy" data-date="">
+                                                                                    <input class="span8" size="16" name="data_prospecto" value="<? if(trim($row['data_prospecto'])==""||trim($row['data_prospecto'])=="0000-00-00") { } else { ajustaDataSemHora($row['data_prospecto'],"d/m/Y"); } ?>" type="text">
+                                                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="span3">
+                                                                                <label>Virou cliente</label>
+                                                                                <div class="input-append date" id="data_cliente" data-date-format="dd/mm/yyyy" data-date="">
+                                                                                    <input class="span8" size="16" name="data_cliente" value="<? if(trim($row['data_cliente'])==""||trim($row['data_cliente'])=="0000-00-00") { } else { ajustaDataSemHora($row['data_cliente'],"d/m/Y"); } ?>" type="text">
+                                                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            -->
+                                                                        </div>
+
+                                                                        <div class="formSep">
+                                                                            <label class="req">Ativo ?</label>
+                                                                            <label class="radio" style="color:#C00;">
+                                                                                <input type="radio" name="stat" id="stat1" value="0" <? if($row['stat']==0) { echo "checked"; } ?> >
+                                                                                não
+                                                                            </label>
+                                                                            <label class="radio" style="color:#390;">
+                                                                                <input type="radio" name="stat" id="stat2" value="1" <? if($row['stat']==1) { echo "checked"; } ?> >
+                                                                                sim
+                                                                            </label>
+                                                                        </div>	
+                                                                    </div>
+
+                                                                    <div id="tb3_b" class="tab-pane" style="min-height:350px;">
+                                                                        <div class="formSep">
+                                                                            <div class="span4">
+                                                                                <label>E-mail principal</label>
+                                                                                <input value="<?=$row['email']?>" class="span12" type="text" name="email" id="email" />
+                                                                            </div>
+                                                                            <div class="span2">
+                                                                                <label>Senha</label>
+                                                                                <input value="<?=$row['senha']?>" class="span12" type="text" name="senha" id="senha" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div id="tb3_c" class="tab-pane" style="min-height:350px;">
+                                                                        <div class="formSep">
+                                                                            <label>Tipo de Fornecedor</label>
+                                                                            <select name="tipo_de_documento" id="tipo_de_documento" class="span3" onchange="tipo_de_cliente('');">
+                                                                                <option value="">---</option>
+                                                                                <option value="pf" <? if($row['tipo_de_documento']=="pf") { echo "selected"; } ?>>pessoa física</option>
+                                                                                <option value="pj" <? if($row['tipo_de_documento']=="pj") { echo "selected"; } ?>>pessoa jurídica</option>
+                                                                                <option value="estrangeiro" <? if($row['tipo_de_documento']=="estrangeiro") { echo "selected"; } ?>>estrangeiro</option>
+                                                                            </select>
+                                                                            <span class="help-block">Ao escolher o tipo de fornecedor, abaixo serão exibidos os campos referentes ao tipo de cadastro</span>
+                                                                        </div>
+            
+                                                                        <div class="formSep" style="display:<? if($row['tipo_de_documento']=="pf") { echo "block"; } else { echo "none"; } ?>;" id="div_pf">
+                                                                            <div class="span4">
+                                                                                <label>CPF</label>
+                                                                                <input class="span12" value="<?=$row['cpf']?>" name="cpf" id="cpf" type="text">
+                                                                            </div>
+                                                                            <div class="span4">
+                                                                                <label>RG</label>
+                                                                                <input class="span12" value="<?=$row['rg']?>" name="rg" id="rg" type="text">
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep" style="display:<? if($row['tipo_de_documento']=="pj") { echo "block"; } else { echo "none"; } ?>;" id="div_pj">
+                                                                            <div class="span4">
+                                                                                <label>CNPJ</label>
+                                                                                <input class="span12" value="<?=$row['cnpj']?>" name="cnpj" id="cnpj" type="text">
+                                                                            </div>
+                                                                            <div class="span4">
+                                                                                <label>IE</label>
+                                                                                <input class="span12" value="<?=$row['ie']?>" name="ie" id="ie" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;width:100%;">
+                                                                                <div class="span4">
+                                                                                    <label>Razão Social</label>
+                                                                                    <input class="span12" value="<?=$row['razao_social']?>" name="razao_social" id="razao_social" type="text">
+                                                                                </div>
+                                                                                <div class="span4">
+                                                                                    <label>Nome Fantasia</label>
+                                                                                    <input class="span12" value="<?=$row['nome_fantasia']?>" name="nome_fantasia" id="nome_fantasia" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div style="float:left;width:100%;">
+                                                                                <div class="span4">
+                                                                                    <label>Nome do responsável</label>
+                                                                                    <input class="span12" value="<?=$row['responsavel']?>" name="responsavel" id="responsavel" type="text">
+                                                                                </div>
+                                                                                <div class="span4">
+                                                                                    <label>Cargo</label>
+                                                                                    <input class="span8" value="<?=$row['responsavel_cargo']?>" name="responsavel_cargo" id="responsavel_cargo" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep" style="display:<? if($row['tipo_de_documento']=="estrangeiro") { echo "block"; } else { echo "none"; } ?>;" id="div_estrangeiro">
+                                                                            <div class="span4">
+                                                                                <label>Tipo do Documento Estrangeiro</label>
+                                                                                <input class="span12" value="<?=$row['estrangeiro_nome']?>" name="entrangeiro_nome" id="entrangeiro_nome" type="text">
+                                                                            </div>
+                                                                            <div class="span4">
+                                                                                <label>Número do Documento</label>
+                                                                                <input class="span12" value="<?=$row['estrangeiro_numero']?>" name="entrangeiro_numero" id="entrangeiro_numero" type="text">
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Como conheceu a nossa empresa ?</label>
+                                                                                <select name="como_conheceu" id="como_conheceu" style="width:230px;" onchange="como_conheceu_set('');">
+                                                                                    <option value="">---</option>
+                                                                                    <option value="Google" <? if($row['como_conheceu']=="Google") { echo "selected"; } ?>>Google</option>
+                                                                                    <option value="Outros buscadores" <? if($row['como_conheceu']=="Outros Buscadores") { echo "selected"; } ?>>Outros buscadores</option>
+                                                                                    <option value="Revistas" <? if($row['como_conheceu']=="Revistas") { echo "selected"; } ?>>Revistas</option>
+                                                                                    <option value="Indicações" <? if($row['como_conheceu']=="Indicações") { echo "selected"; } ?>>Indicações</option>
+                                                                                    <option value="Parceiros" <? if($row['como_conheceu']=="Parceiros") { echo "selected"; } ?>>Parceiros</option>
+                                                                                    <option value="Mídia Online" <? if($row['como_conheceu']=="Mídia Online") { echo "selected"; } ?>>Mídia Online</option>
+                                                                                    <option value="Cliente" <? if($row['como_conheceu']=="Cliente") { echo "selected"; } ?>>Cliente</option>
+                                                                                    <option value="Eventos" <? if($row['como_conheceu']=="Eventos") { echo "selected"; } ?>>Eventos</option>
+                                                                                    <option value="Redes Sociais" <? if($row['como_conheceu']=="Redes Sociais") { echo "selected"; } ?>>Redes Sociais</option>
+                                                                                    <option value="Rádio" <? if($row['como_conheceu']=="Rádio") { echo "selected"; } ?>>Rádio</option>
+                                                                                    <option value="Outros" <? if($row['como_conheceu']=="Outros") { echo "selected"; } ?>>Outros</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <input class="span12" style="margin-top:25px;display:<? if($row['como_conheceu']=="Outros") { echo "block"; } else { echo "none"; } ?>;" value="<?=$row['como_conheceu_outro']?>" name="como_conheceu_outro" id="como_conheceu_outro" type="text">
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep">
+                                                                            <label>Website</label>
+                                                                            <input value="<?=$row['website']?>" class="span4" type="text" name="website" id="website" />
+                                                                            <span class="help-block">http://www.dominio.com</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div id="tb3_d" class="tab-pane" style="min-height:350px;">
+                                                                        <p style="float:left;width:100%;color:#368CA9;"><b>Telefones</b></p>
+
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Nome</label>
+                                                                                <input style="float:left;width:350px;" value="" id="nometel_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Operadora</label>
+                                                                                <select id="operadora_item" style="width:130px;">
+                                                                                    <option value="">---</option>
+                                                                                    <option value="Oi">Oi</option>
+                                                                                    <option value="TIM">TIM</option>
+                                                                                    <option value="Claro">Claro</option>
+                                                                                    <option value="Vivo">Vivo</option>
+                                                                                    <option value="Nextel">Nextel</option>
+                                                                                    <option value="Outra">Outra</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Telefone</label>
+                                                                                <input style="float:left;margin-right:10px;width:50px;" value="" id="ddd_item" type="text">
+                                                                                <input style="float:left;width:200px;" value="" id="telefone_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <button type="button" onclick="salvar_lista_telefones_sysfornecedor('<?=$mod?>');" style="margin-top:23px;" class="btn btn-primary">Adicionar</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                            <div id="lista_sysfornecedor_telefones" style="width:100%;float:left;">
+                                                                                <? $sufixoGet = ""; $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/sysfornecedor/lista_".$mod."_telefones.php"); ?>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <p style="float:left;width:100%;color:#368CA9;"><b>E-mail's</b></p>
+
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Nome</label>
+                                                                                <input style="float:left;width:350px;" value="" id="nomeemail_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>E-mail</label>
+                                                                                <input style="float:left;width:350px;" value="" id="email_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <button type="button" onclick="salvar_lista_emails_sysfornecedor('<?=$mod?>');" style="margin-top:23px;" class="btn btn-primary">Adicionar</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                            <div id="lista_sysfornecedor_emails" style="width:100%;float:left;">
+                                                                                <? $sufixoGet = ""; $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/sysfornecedor/lista_".$mod."_emails.php"); ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div id="tb3_e" class="tab-pane" style="min-height:350px;">
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>CEP</label>
+                                                                                <input value="<?=$row['cep']?>" style="width:90px;" type="text" name="cep" id="cep" />
+                                                                                <span class="help-block">99999-999</span>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;margin-top:27px;">
+                                                                                <button type="button" onclick="buscaCep();" class="btn btn-small">Carregar endereço</button>
+                                                                            </div>
+                                                                        </div>
+                            
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Rua</label>
+                                                                                <input value="<?=$row['rua']?>" style="width:350px;" type="text" name="rua" id="rua" />
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Número</label>
+                                                                                <input value="<?=$row['numero']?>" style="width:50px;" type="text" name="numero" id="numero" />
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Complemento</label>
+                                                                                <input value="<?=$row['complemento']?>" style="width:250px;" type="text" name="complemento" id="complemento" />
+                                                                            </div>
+                                                                        </div>
+                            
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Estado</label>
+                                                                                <select name="estado" id="estado" style="width:255px;" onchange="mostraCidades();">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlEstado = mysql_query("SELECT * FROM cepbr_estado ORDER BY estado");
+                                                                                    while($rSqlEstado = mysql_fetch_array($qSqlEstado)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlEstado['uf'] ?>" <? if($rSqlEstado['uf']==$row['estado']) { echo "selected"; } ?>><?= utf8_encode($rSqlEstado['estado']) ?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Cidade</label>
+                                                                                <select name="cidade" id="cidade" onchange="javascript:mostraBairros();" style="width:255px">
+                                                                                    <? if(trim($row['estado'])=="") { ?>
+                                                                                    <option value="">---</option>
+                                                                                    <? } else { ?>
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlCidade = mysql_query("SELECT * FROM cepbr_cidade WHERE id_cidade='".$row['cidade']."' ORDER BY cidade");
+                                                                                    while($rSqlCidade=mysql_fetch_array($qSqlCidade)) {
+                                                                                    ?>
+                                                                                    <option value="<?=$rSqlCidade['id_cidade']?>" <? if($rSqlCidade['id_cidade']==$row['cidade']) { echo "selected"; } ?>><?=utf8_encode($rSqlCidade['cidade'])?></option>
+                                                                                    <? } ?>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Bairro</label>
+                                                                                <select name="bairro" id="bairro" style="width:255px;">
+                                                                                    <? if(trim($row['cidade'])=="") { ?>
+                                                                                    <option value="">---</option>
+                                                                                    <? } else { ?>
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlBairro = mysql_query("SELECT * FROM cepbr_bairro WHERE id_cidade='".$row['cidade']."' ORDER BY bairro");
+                                                                                    while($rSqlBairro=mysql_fetch_array($qSqlBairro)) {
+                                                                                    ?>
+                                                                                    <option value="<?=$rSqlBairro['id_bairro']?>" <? if($rSqlBairro['id_bairro']==$row['bairro']) { echo "selected"; } ?>><?=utf8_encode($rSqlBairro['bairro'])?></option>
+                                                                                    <? } ?>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div id="tb3_f" class="tab-pane" style="min-height:350px;">
+                                                                        <div class="formSep">
+                                                                            <div class="span3">
+                                                                                <label>Nome</label>
+                                                                                <input value="" class="span12" type="text" id="nome_item" placeholder="Digite o nome da rede" />
+                                                                            </div>
+                                                                            <div class="span5" >
+                                                                                <label>Link</label>
+                                                                                <input value="" class="span12" type="text" id="link_item" placeholder="Digite ou cole aqui o link da rede" />
+                                                                            </div>
+                                                                            <div class="span2" >
+                                                                                <button type="button" onclick="salvar_lista_redes_sysfornecedor('<?=$mod?>');" style="margin-top:23px;" class="btn btn-primary">Adicionar</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                            <div style="float:left;margin-right:10px;width:100%;padding-bottom:10px;padding-top:10px;">Lista de itens</div>
+                                                                            <div id="lista_sysfornecedor_redes" style="width:100%;float:left;">
+                                                                                <? $sufixoGet = ""; $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/sysfornecedor/lista_".$mod."_redes.php"); ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div id="tb3_g" class="tab-pane" style="min-height:350px;">
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Status do cliente</label>
+                                                                                <select name="id<?=$mod?>_status" id="id<?=$mod?>_status">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM ".$mod."_status WHERE stat='1' ORDER BY ordem");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>" <? if($row['id'.$mod.'_status']==$rSqlItem['id']) { echo "selected"; } ?>><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Classificação</label>
+                                                                                <select name="id<?=$mod?>_classificacao" id="id<?=$mod?>_classificacao">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM ".$mod."_classificacao WHERE stat='1' ORDER BY ordem");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>" <? if($row['id'.$mod.'_classificacao']==$rSqlItem['id']) { echo "selected"; } ?>><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <!--
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Quem prospectou</label>
+                                                                                <select name="idsysusu_prospecto" id="idsysusu_prospecto">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM sysusu ORDER BY nome");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>" <? if($row['idsysusu_prospecto']==$rSqlItem['id']) { echo "selected"; } ?>><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            -->
+                                                                        </div>
+                                                                        <div class="formSep">
+                                                                            <label>Observações</label>
+                                                                            <textarea name="obs" id="obs_editar" class="span12" style="height:150px;"><?=$row['obs']?></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div id="tb3_h" class="tab-pane" style="min-height:350px;">
+																		<script type="text/javascript" src="<?=$link?>template/js/upload.js"></script>
+                                                                        <script type="text/javascript" >
+                                                                            $(function(){
+                                                                                new AjaxUpload($('#upload-arquivo'), {
+                                                                                    action: '<?=$link?>acoes/<?=$mod?>/drop-arquivo.php?numeroUnico_upload_arquivo=<?=$numeroUnicoGerado?>',
+                                                                                    name: 'file',
+                                                                                    onSubmit: function(file, ext){
+                                                                                    },
+                                                                                    onComplete: function(file, response){
+                                                                                        parent.$("#galeria-fotos").html(response);
+                                                                                    }
+                                                                                });
+                                                                                
+                                                                            });
+                                                                        </script>
+                                                                        <div class="formSep">
+                                                                            <label>Arquivo</label>
+                                                                            <input type="button" id="upload-arquivo" value="adicionar arquivo" class="btn" />
+                                                                        </div>
+                                    
+                                                                        <div id="drag-drop-div" class="formSep">
+                                                                            <div id="dragandrophandler" style="margin-left:0px;">Arrastar e Soltar os Arquivos Aqui</div>
+                                                                            <div id="status1"></div>
+                                                                        </div>
+                                                                        <script>
+                                                                        function sendFileToServer(formData,status)
+                                                                        {
+                                                                            var uploadURL ="<?=$link?>acoes/<?=$mod?>/drop-arquivo.php"; //Upload URL
+                                                                            var extraData = { }; //Extra Data.
+                                                                            var jqXHR=$.ajax({
+                                                                                    xhr: function() {
+                                                                                    var xhrobj = $.ajaxSettings.xhr();
+                                                                                    if (xhrobj.upload) {
+                                                                                            xhrobj.upload.addEventListener('progress', function(event) {
+                                                                                                var percent = 0;
+                                                                                                var position = event.loaded || event.position;
+                                                                                                var total = event.total;
+                                                                                                if (event.lengthComputable) {
+                                                                                                    percent = Math.ceil(position / total * 100);
+                                                                                                }
+                                                                                                //Set progress
+                                                                                                status.setProgress(percent);
+                                                                                            }, false);
+                                                                                        }
+                                                                                    return xhrobj;
+                                                                                },
+                                                                            url: uploadURL,
+                                                                            type: "POST",
+                                                                            contentType:false,
+                                                                            processData: false,
+                                                                                cache: false,
+                                                                                data: formData,
+                                                                                success: function(data){
+                                                                                    status.setProgress(100);
+                                                                                    parent.$(".statusbar").fadeOut();
+                                                                        
+                                                                                    parent.$("#galeria-fotos").html(data);
+                                                                                }
+                                                                            }); 
+                                                                         
+                                                                            status.setAbort(jqXHR);
+                                                                        }
+                                                                         
+                                                                        var rowCount=0;
+                                                                        function createStatusbar(obj)
+                                                                        {
+                                                                             rowCount++;
+                                                                             var row="odd";
+                                                                             if(rowCount %2 ==0) row ="even";
+                                                                             this.statusbar = $("<div class='statusbar "+row+"'></div>");
+                                                                             this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
+                                                                             this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
+                                                                             this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
+                                                                             this.abort = $("<div class='abort'>Cancelar</div>").appendTo(this.statusbar);
+                                                                             obj.after(this.statusbar);
+                                                                         
+                                                                            this.setFileNameSize = function(name,size)
+                                                                            {
+                                                                                var sizeStr="";
+                                                                                var sizeKB = size/1024;
+                                                                                if(parseInt(sizeKB) > 1024)
+                                                                                {
+                                                                                    var sizeMB = sizeKB/1024;
+                                                                                    sizeStr = sizeMB.toFixed(2)+" MB";
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    sizeStr = sizeKB.toFixed(2)+" KB";
+                                                                                }
+                                                                         
+                                                                                this.filename.html(name);
+                                                                                this.size.html(sizeStr);
+                                                                            }
+                                                                            this.setProgress = function(progress)
+                                                                            {       
+                                                                                var progressBarWidth =progress*this.progressBar.width()/ 100;  
+                                                                                this.progressBar.find('div').animate({ width: progressBarWidth }, 10).html(progress + "% &nbsp;");
+                                                                                if(parseInt(progress) >= 100)
+                                                                                {
+                                                                                    this.abort.hide();
+                                                                                }
+                                                                            }
+                                                                            this.setAbort = function(jqxhr)
+                                                                            {
+                                                                                var sb = this.statusbar;
+                                                                                this.abort.click(function()
+                                                                                {
+                                                                                    jqxhr.abort();
+                                                                                    sb.hide();
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                        function handleFileUpload(files,obj)
+                                                                        {
+                                                                           for (var i = 0; i < files.length; i++) 
+                                                                           {
+                                                                                var fd = new FormData();
+                                                                                fd.append('file', files[i]);
+                                                                                fd.append('numeroUnicoS','<?=$numeroUnicoGerado?>');
+                                                                         
+                                                                                var status = new createStatusbar(obj); //Using this we can set progress.
+                                                                                status.setFileNameSize(files[i].name,files[i].size);
+                                                                                sendFileToServer(fd,status);
+                                                                         
+                                                                           }
+                                                                        }
+                                                                        $(document).ready(function()
+                                                                        {
+                                                                        var obj = $("#dragandrophandler");
+                                                                        obj.on('dragenter', function (e) 
+                                                                        {
+                                                                            e.stopPropagation();
+                                                                            e.preventDefault();
+                                                                            $(this).css('border', '2px dotted #626262');
+                                                                        });
+                                                                        obj.on('dragover', function (e) 
+                                                                        {
+                                                                             e.stopPropagation();
+                                                                             e.preventDefault();
+                                                                        });
+                                                                        obj.on('drop', function (e) 
+                                                                        {
+                                                                         
+                                                                             $(this).css('border', '2px dotted #626262');
+                                                                             e.preventDefault();
+                                                                             var files = e.originalEvent.dataTransfer.files;
+                                                                         
+                                                                             //We need to send dropped files to Server
+                                                                             handleFileUpload(files,obj);
+                                                                        });
+                                                                        $(document).on('dragenter', function (e) 
+                                                                        {
+                                                                            e.stopPropagation();
+                                                                            e.preventDefault();
+                                                                        });
+                                                                        $(document).on('dragover', function (e) 
+                                                                        {
+                                                                          e.stopPropagation();
+                                                                          e.preventDefault();
+                                                                          obj.css('border', '2px dotted #626262');
+                                                                        });
+                                                                        $(document).on('drop', function (e) 
+                                                                        {
+                                                                            e.stopPropagation();
+                                                                            e.preventDefault();
+                                                                        });
+                                                                         
+                                                                        });
+                                                                        </script>
+                                                                    
+                                                                        <div id="galeria-fotos" class="formSep">
+                                                                            <? $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/".$mod."/lista_galeria.php"); ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="formSep">
+                                                                <? if(trim($sysperm['editar_'.$mod.''])==1) { ?>
+                                                                <button type="submit" class="btn btn-success">Salvar</button>
+                                                                <button type="submit" onclick="javascript:history.back(-1);" class="btn btn-warning">Cancelar</button>
+                                                                <? } ?>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+
+                                                <? } ?>
+                                                
+                                                <div id="tb1_lista" class="tab-pane <? if(trim($_REQUEST['var3'])=="") { ?>active<? } ?>">
+                                                    <div class="w-box w-box">
+                                                        <div class="w-box-header">
+                                                            <div class="pull-left">
+                                                                <div class="toggle-group">
+                                                                    <span data-toggle="dropdown" class="dropdown-toggle">Ações <span class="caret"></span></span>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li><a href="javascript:void(0);" onclick="acao_selecionados('excluir');"><img style="margin-left:-15px;margin-top:-2px;" src="<?=$link?>template/img/icones_novos/16/remover-x.png" />&nbsp;Remover</a></li>
+                                                                        <li><a href="javascript:void(0);" onclick="acao_selecionados('publicar');"><img style="margin-left:-15px;margin-top:-2px;" src="<?=$link?>template/img/icones_novos/16/stat-1.png" />&nbsp;Publicar</a></li>
+                                                                        <li><a href="javascript:void(0);" onclick="acao_selecionados('despublicar');"><img style="margin-left:-15px;margin-top:-2px;" src="<?=$link?>template/img/icones_novos/16/stat-0.png" />&nbsp;Despublicar</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="w-box-content">
+                                                            <form name="list" action="<?=$link?><?=$_REQUEST['var1']?>/<?=$_REQUEST['var2']?>" method="post" target="_self">
+                                                            <input type="hidden" name="acaoForm" id="acaoForm_lista" value="" />
+                                                            <input type="hidden" name="modulo" value="<?=$mod?>" />
+                                                            <table id="dt_basic" class="table table-striped table-condensed">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="width:20px;" class="table_checkbox"><input type="checkbox" name="select_msgs" class="select_msgs ptip_se" title="Selecionar todos" data-tableid="dt_basic" /></th>
+                                                                    <th style="width:150px;">Categoria</th>
+                                                                    <th>Nome</th>
+                                                                    <th>E-mail</th>
+                                                                    <th>Telefone</th>
+                                                                    <th>Website</th>
+                                                                    <th style="width:110px;">Ações</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?
+                                                                $qSql = mysql_query("SELECT * FROM ".$linguagem_set."".$mod." ORDER BY data DESC, dataModificacao DESC");
+                                                                while($rSql = mysql_fetch_array($qSql)) {
+                                                                     $url_limpa = transformaCaractere($rSql['nome']);
+                                                                ?>
+                                                                <script>
+																$(function(){
+																	 
+																	$('#nome-<?=$rSql['id']?>').editable({
+																		validate: function(value) {
+																		   if($.trim(value) == '') { 
+																		    return 'Este campo é obrigatório';
+																		   } else {
+																			   salva_campo_tabela('nome','<?=$rSql['id']?>','<?=$mod?>',value);
+																		   }
+																		}
+																	});
+																	
+																});
+                                                                </script>
+																
+                                                                <tr id="linha-<?=$rSql['id']?>">
+                                                                    <td style="vertical-align:middle;" class="nolink"><input type="checkbox" name="msg_sel[]" class="select_msg" value="<?=$rSql['id']?>" /></td>
+
+                                                                    <? $item = mysql_fetch_array(mysql_query("SELECT * FROM ".$mod."_categoria WHERE id='".$rSql['id'.$mod.'_categoria']."'")); ?>
+                                                                    <td style="vertical-align:middle;"><?=$item['nome']?></td>
+                                                                    <td style="vertical-align:middle;"><a data-original-title="Editar campo Nome" data-placeholder="Digite um Nome" data-placement="right" data-pk="1" data-type="text" id="nome-<?=$rSql['id']?>" href="#"><?=$rSql['nome']?></a></td>
+                                                                    <td style="vertical-align:middle;"><?=$rSql['email']?></td>
+                                                                    <? $sysfornecedor_telefones = mysql_fetch_array(mysql_query("SELECT * FROM ".$mod."_telefones WHERE numeroUnico_pai='".$rSql['numeroUnico']."' ORDER BY data LIMIT 1")); ?>
+                                                                    <td style="vertical-align:middle;"><? if(trim($sysfornecedor_telefones['telefone'])=="") { } else { ?><?=$sysfornecedor_telefones['operadora']?> - (<?=$sysfornecedor_telefones['ddd']?>) <?=$sysfornecedor_telefones['telefone']?><? } ?></td>
+                                                                    <td style="vertical-align:middle;"><?=$rSql['webiste']?></td>
+                                                                    <td style="vertical-align:middle;" class="nolink">
+                                                                        <div class="btn-group">
+                                                                        <? if(trim($sysperm['editar_'.$mod.''])==1) { ?>
+                                                                            <div style="float:left;width:16px;margin-left:10px;"><a href="<?=$link?><?=$_REQUEST['var1']?>/<?=$_REQUEST['var2']?>/editar/<?=$rSql['id']?>/" class="btn-mini ptip_se" title="Editar"><img src="<?=$link?>template/img/icones_novos/16/editar.png" /></a></div>
+																		<? } ?>
+                                                                        <? if(trim($sysperm['excluir_'.$mod.''])==1) { ?>
+                                                                            <div style="float:left;width:16px;margin-left:10px;"><a href="javascript:void(0);" onclick="remover_item_tabela('<?=$rSql['id']?>','<?=$mod?>','NAO','');" class="btn-mini ptip_se" title="Remover"><img src="<?=$link?>template/img/icones_novos/16/remover-x.png" /></a></div>
+																		<? } ?>
+                                                                        <? if(trim($rSql['stat'])=="1") { ?>
+																			<? if(trim($sysperm['despublicar_'.$mod.''])==1) { ?>
+                                                                            <div style="float:left;width:16px;margin-left:10px;"><a href="javascript:void(0);" onclick="muda_stat('<?=$mod?>','<?=$rSql['id']?>','0');" class="btn-mini ptip_se" title="Despublicar"><img src="<?=$link?>template/img/icones_novos/16/stat-1.png" /></a></div>
+                                                                            <? } else { ?>
+                                                                            <div style="float:left;width:16px;margin-left:10px;"><a href="javascript:void(0);" onclick="alert('Você não tem permissão para esta ação !');" class="btn-mini ptip_se" title="Despublicar"><img src="<?=$link?>template/img/icones_novos/16/stat-1.png" /></a></div>
+                                                                            <? } ?>
+                                                                        <? } else { ?>
+																			<? if(trim($sysperm['publicar_'.$mod.''])==1) { ?>
+                                                                            <div style="float:left;width:16px;margin-left:10px;"><a href="javascript:void(0);" onclick="muda_stat('<?=$mod?>','<?=$rSql['id']?>','1');" class="btn-mini ptip_se" title="Publicar"><img src="<?=$link?>template/img/icones_novos/16/stat-0.png" /></a></div>
+                                                                            <? } else { ?>
+                                                                            <div style="float:left;width:16px;margin-left:10px;"><a href="javascript:void(0);" onclick="alert('Você não tem permissão para esta ação !');" class="btn-mini ptip_se" title="Publicar"><img src="<?=$link?>template/img/icones_novos/16/stat-0.png" /></a></div>
+                                                                            <? } ?>
+                                                                        <? } ?>
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <? } ?>
+                                                            </tbody>
+                                                            </table>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <? if(trim($_REQUEST['var3'])=="") { ?>
+                                                <div id="tb1_novo" class="tab-pane">
+                                                    <div>
+                                                        <form name="forms" method="post" action="<?=$link?><?=$_REQUEST['var1']?>/<?=$_REQUEST['var2']?>" target="_self" ENCTYPE="multipart/form-data" id="forms">
+                                                            <input type="hidden" name="acaoLocal" value="interno" />
+                                                            <input type="hidden" name="acaoForm" value="add" />
+                                                            <input type="hidden" name="modulo" value="<?=$mod?>" />
+                
+                                                            <? 
+                                                            $numeroUnicoGerado = geraCodReturn(); 
+                                                            ?>
+                                                            <input type="hidden" name="numeroUnico" id="numeroUnico" value="<?=$numeroUnicoGerado?>">
+
+                                                            <div class="tabbable tabs-left tabbable-bordered">
+                                                                <ul class="nav nav-tabs">
+                                                                    <li class="active"><a data-toggle="tab" href="#tb3_a">Dados principais</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_b">Dados de acesso</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_c">Dados complementares</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_d">Contatos</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_e">Endereço</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_f">Redes Sociais</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_g">Observações</a></li>
+                                                                    <li><a data-toggle="tab" href="#tb3_h">Arquivos</a></li>
+                                                                </ul>
+                                                                <div class="tab-content">
+
+                                                                    <div id="tb3_a" class="tab-pane active" style="min-height:350px;">
+            
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Escolha a categoria</label>
+                                                                                <select name="id<?=$mod?>_categoria" id="id<?=$mod?>_categoria">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM ".$mod."_categoria WHERE stat='1' ORDER BY ordem");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>"><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                
+                                                                        <div class="formSep">
+                                                                            <label class="req">Nome Completo</label>
+                                                                            <input value="" class="span7" type="text" name="nome" id="nome" />
+                                                                        </div>
+                            
+                                                                        <div class="formSep">
+                                                                            <div class="span3">
+                                                                                <label>Data de Cadastro</label>
+                                                                                <div class="input-append date" id="data_cadastro" data-date-format="dd/mm/yyyy" data-date="<? echo date("d/m/Y"); ?>">
+                                                                                    <input class="span8" size="16" name="data_cadastro" value="<? echo date("d/m/Y"); ?>" type="text">
+                                                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--
+                                                                            <div class="span3">
+                                                                                <label>Data de Prospecto</label>
+                                                                                <div class="input-append date" id="data_prospecto" data-date-format="dd/mm/yyyy" data-date="">
+                                                                                    <input class="span8" size="16" name="data_prospecto" value="" type="text">
+                                                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="span3">
+                                                                                <label>Virou cliente</label>
+                                                                                <div class="input-append date" id="data_cliente" data-date-format="dd/mm/yyyy" data-date="">
+                                                                                    <input class="span8" size="16" name="data_cliente" value="" type="text">
+                                                                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            -->
+                                                                        </div>
+                                                                        
+            
+                                                                        <div class="formSep">
+                                                                            <label class="req">Ativo ?</label>
+                                                                            <label class="radio" style="color:#C00;">
+                                                                                <input type="radio" name="stat" id="ativo1" value="0" >
+                                                                                não
+                                                                            </label>
+                                                                            <label class="radio" style="color:#390;">
+                                                                                <input type="radio" name="stat" id="ativo2" checked="checked" value="1" >
+                                                                                sim
+                                                                            </label>
+                                                                        </div>	
+            
+                                                                    </div>
+
+                                                                    <div id="tb3_b" class="tab-pane" style="min-height:350px;">
+
+                                                                        <div class="formSep">
+                                                                            <div class="span4">
+                                                                                <label>E-mail principal</label>
+                                                                                <input value="" class="span12" type="text" name="email" id="email" />
+                                                                                <span class="help-block">Este e-mail será utilizado para o cliente acessar o painel de controle e também para toda comunicação que for feita através do sistema</span>
+                                                                            </div>
+                                                                            <div class="span2">
+                                                                                <label>Senha</label>
+                                                                                <input value="" class="span12" type="text" name="senha" id="senha" />
+                                                                            </div>
+                                                                        </div>
+                            
+                                                                    </div>
+
+                                                                    <div id="tb3_c" class="tab-pane" style="min-height:350px;">
+            
+                                                                        <div class="formSep">
+                                                                            <label>Tipo de Fornecedor</label>
+                                                                            <select name="tipo_de_documento" id="tipo_de_documento" class="span3" onchange="tipo_de_cliente('');">
+                                                                                <option value="">---</option>
+                                                                                <option value="pf">pessoa física</option>
+                                                                                <option value="pj">pessoa jurídica</option>
+                                                                                <option value="estrangeiro">estrangeiro</option>
+                                                                            </select>
+                                                                            <span class="help-block">Ao escolher o tipo de fornecedor, abaixo serão exibidos os campos referentes ao tipo de cadastro</span>
+                                                                        </div>
+            
+                                                                        <div class="formSep" style="display:none;" id="div_pf">
+                                                                            <div class="span4">
+                                                                                <label>CPF</label>
+                                                                                <input class="span12" value="" name="cpf" id="cpf" type="text">
+                                                                            </div>
+                                                                            <div class="span4">
+                                                                                <label>RG</label>
+                                                                                <input class="span12" value="" name="rg" id="rg" type="text">
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep" style="display:none;" id="div_pj">
+                                                                            <div class="span4">
+                                                                                <label>CNPJ</label>
+                                                                                <input class="span12" value="" name="cnpj" id="cnpj" type="text">
+                                                                            </div>
+                                                                            <div class="span4">
+                                                                                <label>IE</label>
+                                                                                <input class="span12" value="" name="ie" id="ie" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;width:100%;">
+                                                                                <div class="span4">
+                                                                                    <label>Razão Social</label>
+                                                                                    <input class="span12" value="" name="razao_social" id="razao_social" type="text">
+                                                                                </div>
+                                                                                <div class="span4">
+                                                                                    <label>Nome Fantasia</label>
+                                                                                    <input class="span12" value="" name="nome_fantasia" id="nome_fantasia" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div style="float:left;width:100%;">
+                                                                                <div class="span4">
+                                                                                    <label>Nome do responsável</label>
+                                                                                    <input class="span12" value="" name="responsavel" id="responsavel" type="text">
+                                                                                </div>
+                                                                                <div class="span4">
+                                                                                    <label>Cargo</label>
+                                                                                    <input class="span8" value="" name="responsavel_cargo" id="responsavel_cargo" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep" style="display:none;" id="div_estrangeiro">
+                                                                            <div class="span4">
+                                                                                <label>Tipo do Documento Estrangeiro</label>
+                                                                                <input class="span12" value="" name="entrangeiro_nome" id="entrangeiro_nome" type="text">
+                                                                            </div>
+                                                                            <div class="span4">
+                                                                                <label>Número do Documento</label>
+                                                                                <input class="span12" value="" name="entrangeiro_numero" id="entrangeiro_numero" type="text">
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Como conheceu a nossa empresa ?</label>
+                                                                                <select name="como_conheceu" id="como_conheceu" style="width:230px;" onchange="como_conheceu_set('');">
+                                                                                    <option value="">---</option>
+                                                                                    <option value="Google">Google</option>
+                                                                                    <option value="Outros buscadores">Outros buscadores</option>
+                                                                                    <option value="Revistas">Revistas</option>
+                                                                                    <option value="Indicações">Indicações</option>
+                                                                                    <option value="Parceiros">Parceiros</option>
+                                                                                    <option value="Mídia Online">Mídia Online</option>
+                                                                                    <option value="Cliente">Cliente</option>
+                                                                                    <option value="Eventos">Eventos</option>
+                                                                                    <option value="Redes Sociais">Redes Sociais</option>
+                                                                                    <option value="Rádio">Rádio</option>
+                                                                                    <option value="Outros">Outros</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <input class="span12" style="margin-top:25px;display:none;" value="" name="como_conheceu_outro" id="como_conheceu_outro" type="text">
+                                                                            </div>
+                                                                        </div>
+            
+                                                                        <div class="formSep">
+                                                                            <label>Website</label>
+                                                                            <input value="" class="span4" type="text" name="website" id="website" />
+                                                                            <span class="help-block">http://www.dominio.com</span>
+                                                                        </div>
+            
+                                                                    </div>
+
+                                                                    <div id="tb3_d" class="tab-pane" style="min-height:350px;">
+                                                                        <p style="float:left;width:100%;color:#368CA9;"><b>Telefones</b></p>
+
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Nome</label>
+                                                                                <input style="float:left;width:350px;" value="" id="nometel_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Operadora</label>
+                                                                                <select id="operadora_item" style="width:130px;">
+                                                                                    <option value="">---</option>
+                                                                                    <option value="Oi">Oi</option>
+                                                                                    <option value="TIM">TIM</option>
+                                                                                    <option value="Claro">Claro</option>
+                                                                                    <option value="Vivo">Vivo</option>
+                                                                                    <option value="Nextel">Nextel</option>
+                                                                                    <option value="Outra">Outra</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Telefone</label>
+                                                                                <input style="float:left;margin-right:10px;width:50px;" value="" id="ddd_item" type="text">
+                                                                                <input style="float:left;width:120px;" value="" id="telefone_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <button type="button" onclick="salvar_lista_telefones_sysfornecedor('<?=$mod?>');" style="margin-top:23px;" class="btn btn-primary">Adicionar</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                            <div id="lista_sysfornecedor_telefones" style="width:100%;float:left;">
+                                                                                <? $sufixoGet = ""; $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/sysfornecedor/lista_".$mod."_telefones.php"); ?>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <p style="float:left;width:100%;color:#368CA9;"><b>E-mail's</b></p>
+
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Nome</label>
+                                                                                <input style="float:left;width:350px;" value="" id="nomeemail_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>E-mail</label>
+                                                                                <input style="float:left;width:350px;" value="" id="email_item" type="text">
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <button type="button" onclick="salvar_lista_emails_sysfornecedor('<?=$mod?>');" style="margin-top:23px;" class="btn btn-primary">Adicionar</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                            <div id="lista_sysfornecedor_emails" style="width:100%;float:left;">
+                                                                                <? $sufixoGet = ""; $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/sysfornecedor/lista_".$mod."_emails.php"); ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div id="tb3_e" class="tab-pane" style="min-height:350px;">
+
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>CEP</label>
+                                                                                <input value="" style="width:90px;" type="text" name="cep" id="cep" />
+                                                                                <span class="help-block">99999-999</span>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;margin-top:27px;">
+                                                                                <button type="button" onclick="buscaCep();" class="btn btn-small">Carregar endereço</button>
+                                                                            </div>
+                                                                        </div>
+                            
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Rua, Avenida ou Servidão</label>
+                                                                                <input value="" style="width:350px;" type="text" name="rua" id="rua" />
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Número</label>
+                                                                                <input value="" style="width:50px;" type="text" name="numero" id="numero" />
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Complemento</label>
+                                                                                <input value="" style="width:250px;" type="text" name="complemento" id="complemento" />
+                                                                            </div>
+                                                                        </div>
+                            
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Estado</label>
+                                                                                <select name="estado" id="estado" style="width:255px;" onchange="mostraCidades();">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlEstado = mysql_query("SELECT * FROM cepbr_estado ORDER BY estado");
+                                                                                    while($rSqlEstado = mysql_fetch_array($qSqlEstado)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlEstado['uf'] ?>"><?= utf8_encode($rSqlEstado['estado']) ?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Cidade</label>
+                                                                                <select name="cidade" id="cidade" onchange="javascript:mostraBairros();" style="width:255px">
+                                                                                    <option value="">---</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Bairro</label>
+                                                                                <select name="bairro" id="bairro" style="width:255px;">
+                                                                                    <option value="">---</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+            
+                                                                    </div>
+
+                                                                    <div id="tb3_f" class="tab-pane" style="min-height:350px;">
+
+                                                                        <div class="formSep">
+                                                                            <div class="span3">
+                                                                                <label>Nome</label>
+                                                                                <input value="" class="span12" type="text" id="nome_item" placeholder="Digite o nome da rede" />
+                                                                            </div>
+                                                                            <div class="span5" >
+                                                                                <label>Link</label>
+                                                                                <input value="" class="span12" type="text" id="link_item" placeholder="Digite ou cole aqui o link da rede" />
+                                                                            </div>
+                                                                            <div class="span2" >
+                                                                                <button type="button" onclick="salvar_lista_redes_sysfornecedor('<?=$mod?>');" style="margin-top:23px;" class="btn btn-primary">Adicionar</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                            <div style="float:left;margin-right:10px;width:100%;padding-bottom:10px;padding-top:10px;">Lista de itens</div>
+                                                                            <div id="lista_sysfornecedor_redes" style="width:100%;float:left;">
+                                                                                <? $sufixoGet = ""; $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/sysfornecedor/lista_".$mod."_redes.php"); ?>
+                                                                            </div>
+                                                                        </div>
+            
+                                                                    </div>
+
+                                                                    <div id="tb3_g" class="tab-pane" style="min-height:350px;">
+
+                                                                        <div class="formSep">
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Status do cliente</label>
+                                                                                <select name="id<?=$mod?>_status" id="id<?=$mod?>_status">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM ".$mod."_status WHERE stat='1' ORDER BY ordem");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>"><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Classificação</label>
+                                                                                <select name="id<?=$mod?>_classificacao" id="id<?=$mod?>_classificacao">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM ".$mod."_classificacao WHERE stat='1' ORDER BY ordem");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>"><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            <!--
+                                                                            <div style="float:left;margin-right:10px;">
+                                                                                <label>Quem prospectou</label>
+                                                                                <select name="idsysusu_prospecto" id="idsysusu_prospecto">
+                                                                                    <option value="">---</option>
+                                                                                    <?
+                                                                                    $qSqlItem = mysql_query("SELECT * FROM sysusu ORDER BY nome");
+                                                                                    while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+                                                                                    ?>
+                                                                                    <option value="<?= $rSqlItem['id'] ?>"><?=$rSqlItem['nome']?></option>
+                                                                                    <? } ?>
+                                                                                </select>
+                                                                            </div>
+                                                                            -->
+                                                                        </div>
+                                                                        <div class="formSep">
+                                                                            <label>Observações</label>
+                                                                            <textarea name="obs" id="obs" class="span12" style="height:150px;"></textarea>
+                                                                        </div>
+        
+                                                                    </div>
+
+                                                                    <div id="tb3_h" class="tab-pane" style="min-height:350px;">
+																		<script type="text/javascript" src="<?=$link?>template/js/upload.js"></script>
+                                                                        <script type="text/javascript" >
+                                                                            $(function(){
+                                                                                new AjaxUpload($('#upload-arquivo'), {
+                                                                                    action: '<?=$link?>acoes/<?=$mod?>/drop-arquivo.php?numeroUnico_upload_arquivo=<?=$numeroUnicoGerado?>',
+                                                                                    name: 'file',
+                                                                                    onSubmit: function(file, ext){
+                                                                                    },
+                                                                                    onComplete: function(file, response){
+                                                                                        parent.$("#galeria-fotos").html(response);
+                                                                                    }
+                                                                                });
+                                                                                
+                                                                            });
+                                                                        </script>
+                                                                        <div class="formSep">
+                                                                            <label>Arquivo</label>
+                                                                            <input type="button" id="upload-arquivo" value="adicionar arquivo" class="btn" />
+                                                                        </div>
+                                    
+                                                                        <div id="drag-drop-div" class="formSep">
+                                                                            <div id="dragandrophandler" style="margin-left:0px;">Arrastar e Soltar os Arquivos Aqui</div>
+                                                                            <div id="status1"></div>
+                                                                        </div>
+                                                                        <script>
+                                                                        function sendFileToServer(formData,status)
+                                                                        {
+                                                                            var uploadURL ="<?=$link?>acoes/<?=$mod?>/drop-arquivo.php"; //Upload URL
+                                                                            var extraData = { }; //Extra Data.
+                                                                            var jqXHR=$.ajax({
+                                                                                    xhr: function() {
+                                                                                    var xhrobj = $.ajaxSettings.xhr();
+                                                                                    if (xhrobj.upload) {
+                                                                                            xhrobj.upload.addEventListener('progress', function(event) {
+                                                                                                var percent = 0;
+                                                                                                var position = event.loaded || event.position;
+                                                                                                var total = event.total;
+                                                                                                if (event.lengthComputable) {
+                                                                                                    percent = Math.ceil(position / total * 100);
+                                                                                                }
+                                                                                                //Set progress
+                                                                                                status.setProgress(percent);
+                                                                                            }, false);
+                                                                                        }
+                                                                                    return xhrobj;
+                                                                                },
+                                                                            url: uploadURL,
+                                                                            type: "POST",
+                                                                            contentType:false,
+                                                                            processData: false,
+                                                                                cache: false,
+                                                                                data: formData,
+                                                                                success: function(data){
+                                                                                    status.setProgress(100);
+                                                                                    parent.$(".statusbar").fadeOut();
+                                                                        
+                                                                                    parent.$("#galeria-fotos").html(data);
+                                                                                }
+                                                                            }); 
+                                                                         
+                                                                            status.setAbort(jqXHR);
+                                                                        }
+                                                                         
+                                                                        var rowCount=0;
+                                                                        function createStatusbar(obj)
+                                                                        {
+                                                                             rowCount++;
+                                                                             var row="odd";
+                                                                             if(rowCount %2 ==0) row ="even";
+                                                                             this.statusbar = $("<div class='statusbar "+row+"'></div>");
+                                                                             this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
+                                                                             this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
+                                                                             this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
+                                                                             this.abort = $("<div class='abort'>Cancelar</div>").appendTo(this.statusbar);
+                                                                             obj.after(this.statusbar);
+                                                                         
+                                                                            this.setFileNameSize = function(name,size)
+                                                                            {
+                                                                                var sizeStr="";
+                                                                                var sizeKB = size/1024;
+                                                                                if(parseInt(sizeKB) > 1024)
+                                                                                {
+                                                                                    var sizeMB = sizeKB/1024;
+                                                                                    sizeStr = sizeMB.toFixed(2)+" MB";
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    sizeStr = sizeKB.toFixed(2)+" KB";
+                                                                                }
+                                                                         
+                                                                                this.filename.html(name);
+                                                                                this.size.html(sizeStr);
+                                                                            }
+                                                                            this.setProgress = function(progress)
+                                                                            {       
+                                                                                var progressBarWidth =progress*this.progressBar.width()/ 100;  
+                                                                                this.progressBar.find('div').animate({ width: progressBarWidth }, 10).html(progress + "% &nbsp;");
+                                                                                if(parseInt(progress) >= 100)
+                                                                                {
+                                                                                    this.abort.hide();
+                                                                                }
+                                                                            }
+                                                                            this.setAbort = function(jqxhr)
+                                                                            {
+                                                                                var sb = this.statusbar;
+                                                                                this.abort.click(function()
+                                                                                {
+                                                                                    jqxhr.abort();
+                                                                                    sb.hide();
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                        function handleFileUpload(files,obj)
+                                                                        {
+                                                                           for (var i = 0; i < files.length; i++) 
+                                                                           {
+                                                                                var fd = new FormData();
+                                                                                fd.append('file', files[i]);
+                                                                                fd.append('numeroUnicoS','<?=$numeroUnicoGerado?>');
+                                                                         
+                                                                                var status = new createStatusbar(obj); //Using this we can set progress.
+                                                                                status.setFileNameSize(files[i].name,files[i].size);
+                                                                                sendFileToServer(fd,status);
+                                                                         
+                                                                           }
+                                                                        }
+                                                                        $(document).ready(function()
+                                                                        {
+                                                                        var obj = $("#dragandrophandler");
+                                                                        obj.on('dragenter', function (e) 
+                                                                        {
+                                                                            e.stopPropagation();
+                                                                            e.preventDefault();
+                                                                            $(this).css('border', '2px dotted #626262');
+                                                                        });
+                                                                        obj.on('dragover', function (e) 
+                                                                        {
+                                                                             e.stopPropagation();
+                                                                             e.preventDefault();
+                                                                        });
+                                                                        obj.on('drop', function (e) 
+                                                                        {
+                                                                         
+                                                                             $(this).css('border', '2px dotted #626262');
+                                                                             e.preventDefault();
+                                                                             var files = e.originalEvent.dataTransfer.files;
+                                                                         
+                                                                             //We need to send dropped files to Server
+                                                                             handleFileUpload(files,obj);
+                                                                        });
+                                                                        $(document).on('dragenter', function (e) 
+                                                                        {
+                                                                            e.stopPropagation();
+                                                                            e.preventDefault();
+                                                                        });
+                                                                        $(document).on('dragover', function (e) 
+                                                                        {
+                                                                          e.stopPropagation();
+                                                                          e.preventDefault();
+                                                                          obj.css('border', '2px dotted #626262');
+                                                                        });
+                                                                        $(document).on('drop', function (e) 
+                                                                        {
+                                                                            e.stopPropagation();
+                                                                            e.preventDefault();
+                                                                        });
+                                                                         
+                                                                        });
+                                                                        </script>
+                                                                    
+                                                                        <div id="galeria-fotos" class="formSep">
+                                                                            <? $numeroUnicoGet = $numeroUnicoGerado; include("./acoes/".$mod."/lista_galeria.php"); ?>
+                                                                        </div>
+            
+                                                                    </div>
+            
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="formSep">
+                                                                <button type="submit" class="btn btn-success">Salvar</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <? } ?>
+
+                                                <div id="tb1_categorias" class="tab-pane">
+                                                    <div>
+                                                        <form name="forms" method="post" action="<?=$link?><?=$_REQUEST['var1']?>/<?=$_REQUEST['var2']?>" target="_self" ENCTYPE="multipart/form-data">
+                                                            <input type="hidden" name="acaoLocal" value="interno" />
+                                                            <input type="hidden" name="acaoForm" value="add" />
+                                                            <input type="hidden" name="modulo" value="<?=$mod?>_categoria" />
+                
+                                                            <? 
+                                                            $numeroUnicoGeradoCategoria = geraCodReturn(); 
+                                                            ?>
+                                                            <input type="hidden" name="numeroUnico" id="numeroUnico_categoria" value="<?=$numeroUnicoGeradoCategoria?>">
+
+                                                            <div class="formSep">
+                                                                <label class="req">Ordem</label>
+                                                                <select id="ordem_categoria" style="width:50px;">
+																	<?
+                                                                    $nordem = mysql_num_rows(mysql_query("SELECT * FROM ".$linguagem_set."".$mod."_categoria"));
+                                                                    if($nordem==0) {
+                                                                    ?>
+                                                                    <option value='1'>1</option>
+                                                                    <?
+                                                                    } else {
+                                                                    $ultimaOrdem = $nordem+1;
+                                                                    for ($b=1; $b<=$ultimaOrdem; $b++) {
+                                                                    ?>
+                                                                    <option value='<?=$b?>' <? if($b==$ultimaOrdem) { echo "selected"; } ?>><?=$b?></option>
+                                                                    <? } } ?>
+                                                                </select>
+                                                            </div>
+                
+                                                            <div class="formSep">
+                                                                <div style="float:left;margin-right:10px;">
+                                                                    <label class="req">Nome</label>
+                                                                    <input value="" style="width:350px;" type="text" id="nome_categoria" onkeyup="controle_url_amigavel_apenas('nome_categoria','slug');" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="formSep">
+                                                                <div style="float:left;margin-right:10px;">
+                                                                    <label class="req">Slug</label>
+                                                                    <input value="" style="width:550px;" type="text" onkeyup="controle_url_amigavel_apenas('slug','slug');" id="slug" />
+                                                                    <span class="help-block">O "slug" é uma versão amigável da URL. Normalmente, é todo em minúsculas e contém apenas letras, números e hífens.</span>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="formSep">
+                                                                <button type="button" onclick="salvar_categoria('<?=$mod?>','_categoria');" class="btn btn-primary">Adicionar</button>
+                                                            </div>
+                                                            <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                <div style="float:left;margin-right:10px;width:100%;padding-bottom:10px;padding-top:10px;">Lista de categorias</div>
+                                                                <div id="lista_categoria_itens" style="width:100%;float:left;">
+																	<? $subLocalGet = "_categoria"; include("./acoes/sysgeral/lista_categoria.php"); ?>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <div id="tb1_status" class="tab-pane">
+                                                    <div>
+                                                        <form name="forms" method="post" action="<?=$link?><?=$_REQUEST['var1']?>/<?=$_REQUEST['var2']?>" target="_self" ENCTYPE="multipart/form-data">
+                
+                                                            <? 
+                                                            $numeroUnicoGeradoCategoria = geraCodReturn(); 
+                                                            ?>
+                                                            <input type="hidden" name="numeroUnico" id="numeroUnico_status" value="<?=$numeroUnicoGeradoCategoria?>">
+
+                                                            <div class="formSep">
+                                                                <label class="req">Ordem</label>
+                                                                <select id="ordem_status" style="width:50px;">
+																	<?
+                                                                    $nordem = mysql_num_rows(mysql_query("SELECT * FROM ".$linguagem_set."".$mod."_status"));
+                                                                    if($nordem==0) {
+                                                                    ?>
+                                                                    <option value='1'>1</option>
+                                                                    <?
+                                                                    } else {
+                                                                    $ultimaOrdem = $nordem+1;
+                                                                    for ($b=1; $b<=$ultimaOrdem; $b++) {
+                                                                    ?>
+                                                                    <option value='<?=$b?>' <? if($b==$ultimaOrdem) { echo "selected"; } ?>><?=$b?></option>
+                                                                    <? } } ?>
+                                                                </select>
+                                                            </div>
+                
+                                                            <div class="formSep">
+                                                                <div style="float:left;margin-right:10px;">
+                                                                    <label class="req">Nome</label>
+                                                                    <input value="" style="width:350px;" type="text" id="nome_status" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="formSep">
+                                                                <button type="button" onclick="salvar_status_classificacao('<?=$mod?>','_status');" class="btn btn-primary">Adicionar</button>
+                                                            </div>
+                                                            <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                <div style="float:left;margin-right:10px;width:100%;padding-bottom:10px;padding-top:10px;">Lista de status</div>
+                                                                <div id="lista_status_itens" style="width:100%;float:left;">
+																	<? $subLocalGet = "_status"; include("./acoes/sysgeral/lista_status_classificacao.php"); ?>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+
+                                                <div id="tb1_classificacao" class="tab-pane">
+                                                    <div>
+                                                        <form name="forms" method="post" action="<?=$link?><?=$_REQUEST['var1']?>/<?=$_REQUEST['var2']?>" target="_self" ENCTYPE="multipart/form-data">
+                
+                                                            <? 
+                                                            $numeroUnicoGeradoCategoria = geraCodReturn(); 
+                                                            ?>
+                                                            <input type="hidden" name="numeroUnico" id="numeroUnico_classificacao" value="<?=$numeroUnicoGeradoCategoria?>">
+
+                                                            <div class="formSep">
+                                                                <label class="req">Ordem</label>
+                                                                <select id="ordem_classificacao" style="width:50px;">
+																	<?
+                                                                    $nordem = mysql_num_rows(mysql_query("SELECT * FROM ".$linguagem_set."".$mod."_classificacao"));
+                                                                    if($nordem==0) {
+                                                                    ?>
+                                                                    <option value='1'>1</option>
+                                                                    <?
+                                                                    } else {
+                                                                    $ultimaOrdem = $nordem+1;
+                                                                    for ($b=1; $b<=$ultimaOrdem; $b++) {
+                                                                    ?>
+                                                                    <option value='<?=$b?>' <? if($b==$ultimaOrdem) { echo "selected"; } ?>><?=$b?></option>
+                                                                    <? } } ?>
+                                                                </select>
+                                                            </div>
+                
+                                                            <div class="formSep">
+                                                                <div style="float:left;margin-right:10px;">
+                                                                    <label class="req">Nome</label>
+                                                                    <input value="" style="width:350px;" type="text" id="nome_classificacao" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="formSep">
+                                                                <button type="button" onclick="salvar_status_classificacao('<?=$mod?>','_classificacao');" class="btn btn-primary">Adicionar</button>
+                                                            </div>
+                                                            <div style="float:left;margin-top:10px;width:100%;padding-bottom:10px;border-top:1px dashed #CCCCCC;padding-top:10px;">
+                                                                <div style="float:left;margin-right:10px;width:100%;padding-bottom:10px;padding-top:10px;">Lista de status</div>
+                                                                <div id="lista_classificacao_itens" style="width:100%;float:left;">
+																	<? $subLocalGet = "_classificacao"; include("./acoes/sysgeral/lista_status_classificacao.php"); ?>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

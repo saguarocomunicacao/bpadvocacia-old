@@ -1,0 +1,19 @@
+<?php
+require_once("../../include/inc/sess.php");
+require_once("../../include/inc/main.php");
+require_once("../../include/inc/data.php");
+
+$chaveGet = $_GET["chaveS"];
+
+?>
+<option value="">---</option>
+<?
+if(trim($sysperm['todos_syscliente'])==1) {
+	$qSqlItem = mysql_query("SELECT * FROM syscliente WHERE stat='1' AND nome LIKE '%".$chaveGet."%' ORDER BY nome");
+} else {
+	$qSqlItem = mysql_query("SELECT * FROM syscliente WHERE idsysusu='".$sysusu['id']."' AND stat='1' AND nome LIKE '%".$chaveGet."%' ORDER BY nome");
+}
+while($rSqlItem = mysql_fetch_array($qSqlItem)) {
+?>
+<option value="<?= $rSqlItem['id'] ?>"><?=$rSqlItem['nome']?></option>
+<? } ?>

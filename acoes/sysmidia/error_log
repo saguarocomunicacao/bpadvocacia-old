@@ -1,0 +1,4 @@
+[20-Nov-2015 09:53:31 America/Sao_Paulo] PHP Warning:  unlink(../../files/sysmidia/5yBA6wyAADb1C10zW6d06ZZ7dA459a/300x140.gif): No such file or directory in /home/bpadv/public_html/admin/include/inc/main.php on line 453
+[20-Nov-2015 09:53:31 America/Sao_Paulo] PHP Warning:  rmdir(../../files/sysmidia/5yBA6wyAADb1C10zW6d06ZZ7dA459a): No such file or directory in /home/bpadv/public_html/admin/include/inc/main.php on line 454
+[17-Oct-2016 11:56:48 UTC] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/bpadv/public_html/admin/include/inc/data.php on line 4
+[17-Nov-2016 13:58:30 UTC] PHP Deprecated:  mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead in /home/bpadv/public_html/admin/include/inc/data.php on line 4

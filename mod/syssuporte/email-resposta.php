@@ -1,0 +1,224 @@
+<?
+$data  = ajustaDataReturn($data,"d/m/Y");
+
+#MENSAGEM PARA O USUÁRIO
+$msg  = "<html>";
+$msg .= "<head>";
+$msg .= "<meta http-equiv=Content-Type content=text/html; charset=utf-8 />";
+$msg .= "<title>".$sysconfig['nome']."</title>";
+
+$msg .= "<style>";
+$msg .= ".CinzaM {";
+$msg .= "	color:#717171;";
+$msg .= "	font-family:Arial, Helvetica, sans-serif;";
+$msg .= "	font-size:12px;";
+$msg .= "	font-style:normal;";
+$msg .= "	font-weight:normal;";
+$msg .= "	text-decoration:none;";
+$msg .= "}";
+$msg .= ".CinzaG {";
+$msg .= "	color:#717171;";
+$msg .= "	font-family:Arial, Helvetica, sans-serif;";
+$msg .= "	font-size:24px;";
+$msg .= "	font-style:normal;";
+$msg .= "	font-weight:normal;";
+$msg .= "	text-decoration:none;";
+$msg .= "}";
+$msg .= "</style>";
+
+$msg .= "</head>";
+
+$msg .= "<body>";
+$msg .= "<table width='570'>";
+$msg .= "    <tr>";
+$msg .= "    	<td>";
+$msg .= "        	<table width='100%' height='50px'>";
+$msg .= "                <tr>";
+$msg .= "                	<td><img src='http://www.tagx.com.br/img/topo_email.jpg' border='0'></td>";
+$msg .= "                </tr>";
+$msg .= "            </table>";
+$msg .= "    	</td>";
+$msg .= "    </tr>";
+$msg .= "    <tr>";
+$msg .= "    	<td>";
+$msg .= "        	<table width='100%'>";
+$msg .= "                <tr>";
+$msg .= "                	<td class='CinzaM'><strong>Chamado #".$idChamado."</strong></td>";
+$msg .= "                </tr>";
+$msg .= "            </table>";
+$msg .= "    	</td>";
+$msg .= "    </tr>";
+$msg .= "    <tr>";
+$msg .= "    	<td>";
+$msg .= "        	<table width='100%'>";
+$msg .= "                <tr>";
+$msg .= "                	<td class='CinzaM'><strong>".$sysusu['nome'].",</strong></td>";
+$msg .= "                </tr>";
+$msg .= "            </table>";
+$msg .= "    	</td>";
+$msg .= "    </tr>";
+$msg .= "    <tr>";
+$msg .= "    	<td>";
+$msg .= "        	<table width='100%'>";
+$msg .= "                <tr>";
+$msg .= "                	<td class='CinzaM'>
+							sua mensagem foi recebida pela equipe da TAGX!
+							Agradecemos seu contato e lhe informamos que em breve retornaremos.
+							</td>";
+$msg .= "                </tr>";
+$msg .= "            </table>";
+$msg .= "    	</td>";
+$msg .= "    </tr>";
+$msg .= "    <tr>";
+$msg .= "    	<td>";
+$msg .= "        	<table width='100%'>";
+$msg .= "                <tr>";
+$msg .= "                	<td class='CinzaM'>
+							Atenciosamente,<br>
+							<strong>
+							Equipe TAGX Web Studio<br>
+							atendimento@tagx.com.br<br>
+							</strong>
+							<br><br>
+							Email de disparo automático,<br>
+							<strong>favor não responder.</strong>
+							</td>";
+$msg .= "                </tr>";
+$msg .= "            </table>";
+$msg .= "    	</td>";
+$msg .= "    </tr>";
+$msg .= "    <tr>";
+$msg .= "    	<td><br></td>";
+$msg .= "    </tr>";
+$msg .= "</table>";
+$msg .= "</body>";
+$msg .= "</html>";
+
+#MENSAGEM PARA O COMERCIAL
+$msg2  = "<html>";
+$msg2 .= "<head>";
+$msg2 .= "<meta http-equiv=Content-Type content=text/html; charset=utf-8 />";
+$msg2 .= "<title>".$sysconfig['nome']."</title>";
+
+$msg2 .= "<style>";
+$msg2 .= ".CinzaM {";
+$msg2 .= "	color:#717171;";
+$msg2 .= "	font-family:Arial, Helvetica, sans-serif;";
+$msg2 .= "	font-size:12px;";
+$msg2 .= "	font-style:normal;";
+$msg2 .= "	font-weight:normal;";
+$msg2 .= "	text-decoration:none;";
+$msg2 .= "}";
+$msg2 .= ".CinzaG {";
+$msg2 .= "	color:#717171;";
+$msg2 .= "	font-family:Arial, Helvetica, sans-serif;";
+$msg2 .= "	font-size:24px;";
+$msg2 .= "	font-style:normal;";
+$msg2 .= "	font-weight:normal;";
+$msg2 .= "	text-decoration:none;";
+$msg2 .= "}";
+$msg2 .= "</style>";
+
+$msg2 .= "</head>";
+
+$msg2 .= "<body>";
+$msg2 .= "<table width='570'>";
+$msg2 .= "    <tr>";
+$msg2 .= "    	<td>";
+$msg2 .= "        	<table width='100%' height='50px'>";
+$msg2 .= "                <tr>";
+$msg2 .= "                	<td><img src='http://www.tagx.com.br/img/topo_email.jpg' border='0'></td>";
+$msg2 .= "                </tr>";
+$msg2 .= "            </table>";
+$msg2 .= "    	</td>";
+$msg2 .= "    </tr>";
+$msg2 .= "    <tr>";
+$msg2 .= "    	<td>";
+$msg2 .= "        	<table width='100%'>";
+$msg2 .= "                <tr>";
+$msg2 .= "                	<td class='CinzaM'><strong>Chamado #".$idChamado."</strong></td>";
+$msg2 .= "                </tr>";
+$msg2 .= "            </table>";
+$msg2 .= "    	</td>";
+$msg2 .= "    </tr>";
+$msg2 .= "    <tr>";
+$msg2 .= "    	<td>";
+$msg2 .= "        	<table width='100%'>";
+$msg2 .= "                <tr>";
+$msg2 .= "                	<td class='CinzaM'><strong>Atendimento,</strong></td>";
+$msg2 .= "                </tr>";
+$msg2 .= "            </table>";
+$msg2 .= "    	</td>";
+$msg2 .= "    </tr>";
+$msg2 .= "    <tr>";
+$msg2 .= "    	<td>";
+$msg2 .= "        	<table width='100%'>";
+$msg2 .= "                <tr>";
+$msg2 .= "                	<td class='CinzaM'>
+							um cliente deu prosseguimento ao chamado <strong>#".$idChamado."</strong>, o sistema enviou um email para ele informando 
+							que um de nossos atendentes entraria em contato e prosseguiria com o atendimento.<br>
+							<br><br>
+							Veja abaixo os detalhes do chamado.
+							<br><br>
+							<strong>Data da solicitação:</strong> ".$data."<br>
+							<strong>Empresa:</strong> ".$sysconfig['nome']."<br>
+							<strong>Nome:</strong> ".$sysusu['nome']."<br>
+							<strong>Assunto:</strong> ".$_POST['nome']."<br>
+							<strong>Detalhes do chamado:</strong> ".$_POST['texto']."<br>
+							<br><br>
+							Para prosseguir e responder o chamado clique no link ao lado <a href='".$link."suporte/responder/".$idChamado."/' target='_blank'>#".$idChamado."</a>
+							<br><br>
+							</td>";
+$msg2 .= "                </tr>";
+$msg2 .= "            </table>";
+$msg2 .= "    	</td>";
+$msg2 .= "    </tr>";
+$msg2 .= "    <tr>";
+$msg2 .= "    	<td>";
+$msg2 .= "        	<table width='100%'>";
+$msg2 .= "                <tr>";
+$msg2 .= "                	<td class='CinzaM'>
+							<br>
+							Email de disparo automático,<br>
+							<strong>favor não responder.</strong>
+							</td>";
+$msg2 .= "                </tr>";
+$msg2 .= "            </table>";
+$msg2 .= "    	</td>";
+$msg2 .= "    </tr>";
+$msg2 .= "    <tr>";
+$msg2 .= "    	<td><br></td>";
+$msg2 .= "    </tr>";
+$msg2 .= "</table>";
+$msg2 .= "</body>";
+$msg2 .= "</html>";
+
+$html = $msg;
+
+$html2 = $msg2;
+
+
+$nomeCliente = "".$sysusu['nome']."";
+$emailCliente = "".$sysusu['email']."";
+
+$nomeAdmin = "TAGX";
+$emailAdmin = "atendimento@tagx.com.br";
+
+$assunto  = "Suporte TAGX #".$idChamado."";
+
+$headersCliente  = "MIME-Version: 1.1\n";
+$headersCliente .= "Content-type: text/html; charset=utf-8\n";
+$headersCliente .= "From: " .$nomeAdmin. " <" .$emailAdmin. ">\n";
+$headersCliente .= "Return-Path: ".$emailAdmin."\n"; // return-path
+$envioCliente = mail($emailCliente, utf8_decode($assunto), $html, $headersCliente);
+ 
+#if($envioCliente) { echo "Mensagem enviada com sucesso"; } else { echo "A mensagem não pode ser enviada"; }
+
+$headersAdmin  = "MIME-Version: 1.1\n";
+$headersAdmin .= "Content-type: text/html; charset=utf-8\n";
+$headersAdmin .= "From: " .$nomeCliente. " <" .$emailCliente. ">\n";
+$headersAdmin .= "Return-Path: ".$emailAdmin."\n"; // return-path
+$envioAdmin = mail($emailAdmin, utf8_decode($assunto), $html2, $headersAdmin);
+ 
+#if($envioAdmin) { echo "Mensagem enviada com sucesso"; } else { echo "A mensagem não pode ser enviada"; }
+?>
